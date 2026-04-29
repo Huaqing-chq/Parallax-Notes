@@ -34,6 +34,8 @@ export function LoginPage({
         <SocialLogin
           isLoading={socialLogin.isLoading}
           handleGithubLogin={socialLogin.handleGithubLogin}
+          handleGoogleLogin={socialLogin.handleGoogleLogin}
+          isGoogleLoading={socialLogin.isGoogleLoading}
           showDivider={isEmailConfigured}
         />
 

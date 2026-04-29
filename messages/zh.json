@@ -290,6 +290,8 @@
   "login_or": "或者",
   "login_github": "GitHub 登录",
   "login_github_fuwari": "通过 GitHub 登录",
+  "login_google": "Google 登录",
+  "login_google_fuwari": "通过 Google 登录",
   "login_social_connecting": "正在连接...",
   "login_powered_by_github": "Powered by GitHub OAuth",
   "login_no_account": "没有账户?",

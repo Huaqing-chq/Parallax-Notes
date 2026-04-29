@@ -19,6 +19,8 @@ export interface LoginFormData {
 export interface SocialLoginData {
   isLoading: boolean;
   handleGithubLogin: () => Promise<void>;
+  handleGoogleLogin?: () => Promise<void>;
+  isGoogleLoading?: boolean;
 }
 
 export interface LoginPageProps {

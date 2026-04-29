@@ -14,11 +14,12 @@ export function useSocialLogin(options: UseSocialLoginOptions) {
   const { redirectTo } = options;
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const previousLocation = usePreviousLocation();
   const callbackURL = normalizeRedirectUrl(redirectTo, previousLocation);
 
   const handleGithubLogin = async () => {
-    if (isLoading) return;
+    if (isLoading || isGoogleLoading) return;
 
     setIsLoading(true);
 
@@ -41,10 +42,36 @@ export function useSocialLogin(options: UseSocialLoginOptions) {
     setIsLoading(false);
   };
 
+  const handleGoogleLogin = async () => {
+    if (isLoading || isGoogleLoading) return;
+
+    setIsGoogleLoading(true);
+
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      errorCallbackURL: `${window.location.origin}/login`,
+      callbackURL,
+    });
+
+    if (error) {
+      toast.error(m.login_toast_social_failed(), {
+        description:
+          getSocialLoginAuthErrorMessage(error, m) ??
+          m.auth_error_default_desc(),
+      });
+      setIsGoogleLoading(false);
+      return;
+    }
+
+    setIsGoogleLoading(false);
+  };
+
   return {
     isLoading,
+    isGoogleLoading,
     turnstilePending: false,
     handleGithubLogin,
+    handleGoogleLogin,
   };
 }
 

@@ -34,6 +34,8 @@ export function getAuth({ db, env }: { db: DB; env: Env }) {
     LOCALE,
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
   } = serverEnv(env);
 
   // 固定 10 个 DO 实例池，随机选择避免冷启动
@@ -59,6 +61,14 @@ export function getAuth({ db, env }: { db: DB; env: Env }) {
         clientId: GITHUB_CLIENT_ID,
         clientSecret: GITHUB_CLIENT_SECRET,
       },
+      ...(GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET
+        ? {
+            google: {
+              clientId: GOOGLE_CLIENT_ID,
+              clientSecret: GOOGLE_CLIENT_SECRET,
+            },
+          }
+        : {}),
     },
     hooks: {
       before: createAuthMiddleware(async (ctx) => {

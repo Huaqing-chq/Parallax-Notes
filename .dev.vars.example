@@ -14,6 +14,12 @@ ADMIN_EMAIL=your-email@example.com
 GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-github-client-secret
 
+# --- Google OAuth（可选） ---
+# 前往 https://console.cloud.google.com/apis/credentials 创建 OAuth 2.0 客户端
+# 已授权的重定向 URI 填 http://localhost:3000/api/auth/callback/google
+# GOOGLE_CLIENT_ID=your-google-client-id
+# GOOGLE_CLIENT_SECRET=your-google-client-secret
+
 # --- CDN 缓存清理 ---
 CLOUDFLARE_ZONE_ID=your-zone-id
 CLOUDFLARE_PURGE_API_TOKEN=your-purge-api-token

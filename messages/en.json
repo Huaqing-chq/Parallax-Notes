@@ -297,6 +297,8 @@
   "login_or": "OR",
   "login_github": "Login with GitHub",
   "login_github_fuwari": "Login via GitHub",
+  "login_google": "Login with Google",
+  "login_google_fuwari": "Login via Google",
   "login_social_connecting": "Connecting...",
   "login_powered_by_github": "Powered by GitHub OAuth",
   "login_no_account": "No account?",

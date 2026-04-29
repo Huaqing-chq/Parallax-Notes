@@ -8,6 +8,7 @@
         "@better-auth/core": "1.5.5",
         "@better-auth/utils": "0.3.1",
         "@cloudflare/workers-oauth-provider": "^0.3.0",
+        "@fontsource-variable/outfit": "^5.2.8",
         "@hono/zod-validator": "^0.7.6",
         "@hookform/resolvers": "^5.2.2",
         "@modelcontextprotocol/sdk": "1.26.0",
@@ -312,6 +313,8 @@
     "@fontsource-variable/noto-sans-sc": ["@fontsource-variable/noto-sans-sc@5.2.10", "", {}, "sha512-zdk10i5HrDQTXI7ldD61zToX1fsgig8vDTsu7zB48SXOitWfuX0e5viZAwnkHuhwh096PU6X6i1AyAsbBCISpA=="],
 
     "@fontsource-variable/noto-serif-sc": ["@fontsource-variable/noto-serif-sc@5.2.10", "", {}, "sha512-TRhuDxWAnqUUtRZFCy8aoJB3/7HsuCaW/4B3wBTE0hzE8QVapklTjE2aY7s/wXWFXHLdflYNroloZoXekoKClw=="],
+
+    "@fontsource-variable/outfit": ["@fontsource-variable/outfit@5.2.8", "", {}, "sha512-4oUDCZx/Tcz6HZP423w/niqEH31Gks5IsqHV2ZZz1qKHaVIZdj2f0/S1IK2n8jl6Xo0o3N+3RjNHlV9R73ozQA=="],
 
     "@hono/node-server": ["@hono/node-server@1.19.11", "", { "peerDependencies": { "hono": "^4" } }, "sha512-dr8/3zEaB+p0D2n/IUrlPF1HZm586qgJNXK1a9fhg/PzdtkK7Ksd5l312tJX2yBuALqDYBlG20QEbayqPyxn+g=="],
 

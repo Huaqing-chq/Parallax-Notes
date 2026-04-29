@@ -217,6 +217,8 @@ Flare Stack Blog 的所有面向用户的页面与布局均通过 **主题契约
 | `PAGEVIEW_SALT`           | 运行时 | 浏览量统计的访客匿名化 salt，运行 `openssl rand -hex 16` 生成                                             |
 | `UMAMI_SRC`               | 运行时 | Umami 客户端埋点代理 URL（如 `https://cloud.umami.is`）                                                   |
 | `VITE_UMAMI_WEBSITE_ID`   | 构建时 | Umami Website ID（客户端埋点）                                                                            |
+| `GOOGLE_CLIENT_ID`        | 运行时 | Google OAuth Client ID（可选，启用 Google 登录）                                                          |
+| `GOOGLE_CLIENT_SECRET`    | 运行时 | Google OAuth Client Secret（可选，启用 Google 登录）                                                      |
 
 ---
 
