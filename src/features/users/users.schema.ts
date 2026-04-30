@@ -9,6 +9,7 @@ export const UserItemSchema = z.object({
   email: z.string(),
   image: z.string().nullable(),
   role: z.string().nullable(),
+  emailVerified: z.boolean(),
   createdAt: z.union([z.date(), z.string().pipe(z.coerce.date())]),
 });
 
@@ -17,6 +18,7 @@ export const GetUsersInputSchema = z.object({
   limit: z.number().optional(),
   search: z.string().optional(),
   role: z.enum(["user", "admin", "all"]).optional(),
+  emailVerified: z.enum(["all", "verified", "unverified"]).optional(),
 });
 
 export const UpdateUserRoleInputSchema = z.object({

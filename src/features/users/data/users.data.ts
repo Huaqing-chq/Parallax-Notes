@@ -10,9 +10,16 @@ export async function getUsers(
     limit?: number;
     search?: string;
     role?: "user" | "admin" | "all";
+    emailVerified?: "all" | "verified" | "unverified";
   } = {},
 ) {
-  const { offset = 0, limit = DEFAULT_PAGE_SIZE, search, role } = options;
+  const {
+    offset = 0,
+    limit = DEFAULT_PAGE_SIZE,
+    search,
+    role,
+    emailVerified,
+  } = options;
 
   const conditions = [];
 
@@ -21,12 +28,18 @@ export async function getUsers(
     or(eq(user.role, "admin"), eq(user.role, "user"), eq(user.role, "")),
   );
 
+  // Default: show only verified users to avoid displaying junk/unverified accounts.
+  // Pass emailVerified: "all" to include everything, or "unverified" to see only unverified.
+  const effectiveFilter = emailVerified ?? "verified";
+  if (effectiveFilter === "verified") {
+    conditions.push(eq(user.emailVerified, true));
+  } else if (effectiveFilter === "unverified") {
+    conditions.push(eq(user.emailVerified, false));
+  }
+
   if (role && role !== "all") {
     if (role === "user") {
-      // "user" role: role is null, empty, or "user"
-      conditions.push(
-        or(eq(user.role, "user"), eq(user.role, "")),
-      );
+      conditions.push(or(eq(user.role, "user"), eq(user.role, "")));
     } else {
       conditions.push(eq(user.role, role));
     }
@@ -39,8 +52,7 @@ export async function getUsers(
     );
   }
 
-  const whereClause =
-    conditions.length > 0 ? and(...conditions) : undefined;
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
   const [items, totalResult] = await Promise.all([
     db
@@ -50,6 +62,7 @@ export async function getUsers(
         email: user.email,
         image: user.image,
         role: user.role,
+        emailVerified: user.emailVerified,
         createdAt: user.createdAt,
       })
       .from(user)

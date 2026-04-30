@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  AlertTriangle,
   ChevronDown,
   ChevronUp,
   Search,
@@ -8,13 +9,7 @@ import {
   User,
   UsersRound,
 } from "lucide-react";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import { useUpdateUserRole } from "@/features/users/hooks/use-update-user-role";
 import { usersListQuery } from "@/features/users/queries";
@@ -28,6 +23,7 @@ const OVERSCAN = 5;
 const SearchSchema = z.object({
   search: z.string().optional(),
   role: z.enum(["user", "admin", "all"]).optional(),
+  emailVerified: z.enum(["all", "verified", "unverified"]).optional(),
 });
 
 export const Route = createFileRoute("/admin/users/")({
@@ -43,7 +39,11 @@ export const Route = createFileRoute("/admin/users/")({
 });
 
 function UsersManagement() {
-  const { search = "", role = "all" } = Route.useSearch();
+  const {
+    search = "",
+    role = "all",
+    emailVerified = "verified",
+  } = Route.useSearch();
   const navigate = Route.useNavigate();
   const [localSearch, setLocalSearch] = useState(search);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -69,6 +69,7 @@ function UsersManagement() {
       limit: 500,
       search: search || undefined,
       role: role === "all" ? undefined : role,
+      emailVerified: emailVerified === "all" ? undefined : emailVerified,
     }),
   );
 
@@ -90,44 +91,78 @@ function UsersManagement() {
       </header>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Search */}
-        <div className="relative flex-1">
-          <Search
-            size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-          />
-          <input
-            type="text"
-            value={localSearch}
-            onChange={(e) => setLocalSearch(e.target.value)}
-            placeholder={m.admin_users_search_placeholder()}
-            className="w-full h-10 pl-9 pr-4 bg-transparent border border-border/30 text-sm font-mono placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors"
-          />
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
+            <input
+              type="text"
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              placeholder={m.admin_users_search_placeholder()}
+              className="w-full h-10 pl-9 pr-4 bg-transparent border border-border/30 text-sm font-mono placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors"
+            />
+          </div>
+
+          {/* Role filter */}
+          <div className="flex gap-2">
+            {(["all", "user", "admin"] as const).map((r) => (
+              <button
+                key={r}
+                onClick={() =>
+                  navigate({
+                    search: (prev) => ({
+                      ...prev,
+                      role: r === "all" ? undefined : r,
+                    }),
+                  })
+                }
+                className={cn(
+                  "px-4 py-2 text-[10px] font-mono uppercase tracking-widest border transition-colors",
+                  (role ?? "all") === r
+                    ? "bg-foreground text-background border-foreground"
+                    : "text-muted-foreground border-border/30 hover:text-foreground hover:border-foreground/30",
+                )}
+              >
+                {r === "all"
+                  ? m.admin_users_filter_all()
+                  : r === "admin"
+                    ? m.admin_users_filter_admin()
+                    : m.admin_users_filter_user()}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Role filter */}
+        {/* Email verification filter */}
         <div className="flex gap-2">
-          {(["all", "user", "admin"] as const).map((r) => (
+          {(["verified", "unverified", "all"] as const).map((v) => (
             <button
-              key={r}
+              key={v}
               onClick={() =>
                 navigate({
-                  search: (prev) => ({ ...prev, role: r === "all" ? undefined : r }),
+                  search: (prev) => ({
+                    ...prev,
+                    emailVerified: v === "all" ? undefined : v,
+                  }),
                 })
               }
               className={cn(
                 "px-4 py-2 text-[10px] font-mono uppercase tracking-widest border transition-colors",
-                (role ?? "all") === r
+                (emailVerified ?? "verified") === v
                   ? "bg-foreground text-background border-foreground"
                   : "text-muted-foreground border-border/30 hover:text-foreground hover:border-foreground/30",
               )}
             >
-              {r === "all"
-                ? m.admin_users_filter_all()
-                : r === "admin"
-                  ? m.admin_users_filter_admin()
-                  : m.admin_users_filter_user()}
+              {v === "verified"
+                ? m.admin_users_filter_verified()
+                : v === "unverified"
+                  ? m.admin_users_filter_unverified()
+                  : m.admin_users_filter_all()}
             </button>
           ))}
         </div>
@@ -270,13 +305,15 @@ function UserRow({
                 : "bg-muted/40 text-muted-foreground",
             )}
           >
-            {isAdmin ? (
-              <ShieldCheck size={10} />
-            ) : (
-              <User size={10} />
-            )}
+            {isAdmin ? <ShieldCheck size={10} /> : <User size={10} />}
             {displayRole}
           </span>
+          {!user.emailVerified && (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider rounded-sm bg-amber-500/10 text-amber-500 dark:text-amber-400">
+              <AlertTriangle size={10} />
+              {m.admin_users_unverified_badge()}
+            </span>
+          )}
         </div>
         <p className="text-[10px] font-mono text-muted-foreground truncate max-w-60">
           {user.email}
@@ -292,9 +329,7 @@ function UserRow({
       <div className="shrink-0">
         {isAdmin ? (
           <button
-            onClick={() =>
-              updateRole({ userId: user.id, role: "user" })
-            }
+            onClick={() => updateRole({ userId: user.id, role: "user" })}
             disabled={isUpdating}
             className="flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-mono uppercase tracking-widest border border-orange-500/30 text-orange-500 hover:bg-orange-500/10 transition-colors disabled:opacity-50"
             title={m.admin_users_action_demote()}
@@ -304,9 +339,7 @@ function UserRow({
           </button>
         ) : (
           <button
-            onClick={() =>
-              updateRole({ userId: user.id, role: "admin" })
-            }
+            onClick={() => updateRole({ userId: user.id, role: "admin" })}
             disabled={isUpdating}
             className="flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-mono uppercase tracking-widest border border-blue-500/30 text-blue-500 hover:bg-blue-500/10 transition-colors disabled:opacity-50"
             title={m.admin_users_action_promote()}
