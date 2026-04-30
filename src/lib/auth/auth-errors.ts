@@ -21,6 +21,50 @@ const COMMON_AUTH_ERROR_CODES = [
 
 type CommonAuthErrorCode = (typeof COMMON_AUTH_ERROR_CODES)[number];
 
+// Origin/CSRF errors — grouped together as they share the same user-facing message
+const ORIGIN_CSRF_ERROR_CODES = [
+  "MISSING_OR_NULL_ORIGIN",
+  "INVALID_ORIGIN",
+  "CROSS_SITE_NAVIGATION_LOGIN_BLOCKED",
+  "INVALID_CALLBACK_URL",
+  "INVALID_REDIRECT_URL",
+  "INVALID_ERROR_CALLBACK_URL",
+  "INVALID_NEW_USER_CALLBACK_URL",
+] as const;
+
+// Operational errors
+const OPERATIONAL_ERROR_CODES = [
+  "FAILED_TO_CREATE_USER",
+  "FAILED_TO_CREATE_SESSION",
+  "FAILED_TO_UPDATE_USER",
+  "FAILED_TO_GET_SESSION",
+  "FAILED_TO_CREATE_VERIFICATION",
+  "FAILED_TO_UNLINK_LAST_ACCOUNT",
+  "FAILED_TO_GET_USER_INFO",
+] as const;
+
+// Configuration/provider errors
+const CONFIGURATION_ERROR_CODES = [
+  "PROVIDER_NOT_FOUND",
+  "ID_TOKEN_NOT_SUPPORTED",
+  "VERIFICATION_EMAIL_NOT_ENABLED",
+] as const;
+
+// Account state errors
+const ACCOUNT_STATE_ERROR_CODES = [
+  "EMAIL_CAN_NOT_BE_UPDATED",
+  "EMAIL_ALREADY_VERIFIED",
+  "EMAIL_MISMATCH",
+  "SESSION_NOT_FRESH",
+  "SOCIAL_ACCOUNT_ALREADY_LINKED",
+  "LINKED_ACCOUNT_ALREADY_EXISTS",
+  "ACCOUNT_NOT_FOUND",
+  "USER_ALREADY_HAS_PASSWORD",
+  "PASSWORD_ALREADY_SET",
+  "USER_EMAIL_NOT_FOUND",
+  "CALLBACK_URL_REQUIRED",
+] as const;
+
 export interface AuthClientErrorLike {
   code?: string | null;
   retryAfterMs?: number | null;
@@ -40,6 +84,22 @@ function isCommonAuthErrorCode(code: string): code is CommonAuthErrorCode {
   return COMMON_AUTH_ERROR_CODES.some(
     (authErrorCode) => authErrorCode === code,
   );
+}
+
+function isOriginCsrfErrorCode(code: string): boolean {
+  return ORIGIN_CSRF_ERROR_CODES.some((c) => c === code);
+}
+
+function isOperationalErrorCode(code: string): boolean {
+  return OPERATIONAL_ERROR_CODES.some((c) => c === code);
+}
+
+function isConfigurationErrorCode(code: string): boolean {
+  return CONFIGURATION_ERROR_CODES.some((c) => c === code);
+}
+
+function isAccountStateErrorCode(code: string): boolean {
+  return ACCOUNT_STATE_ERROR_CODES.some((c) => c === code);
 }
 
 function getCustomAuthErrorMessage(
@@ -78,7 +138,29 @@ function getSharedAuthErrorMessage(
   if (customMessage) return customMessage;
 
   const code = getErrorCode(error);
-  if (!code || !isCommonAuthErrorCode(code)) return undefined;
+  if (!code) return undefined;
+
+  // Handle origin/CSRF errors
+  if (isOriginCsrfErrorCode(code)) {
+    return messages.auth_error_origin_mismatch();
+  }
+
+  // Handle operational errors
+  if (isOperationalErrorCode(code)) {
+    return messages.auth_error_operational();
+  }
+
+  // Handle configuration errors
+  if (isConfigurationErrorCode(code)) {
+    return messages.auth_error_configuration();
+  }
+
+  // Handle account state errors
+  if (isAccountStateErrorCode(code)) {
+    return messages.auth_error_account_state();
+  }
+
+  if (!isCommonAuthErrorCode(code)) return undefined;
 
   switch (code) {
     case "USER_ALREADY_EXISTS":

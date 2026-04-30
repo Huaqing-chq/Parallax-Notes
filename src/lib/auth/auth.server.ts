@@ -54,8 +54,22 @@ export function getAuth({ db, env }: { db: DB; env: Env }) {
     }
   }
 
+  // Build trusted origins from BETTER_AUTH_URL, including both HTTP and HTTPS
+  // to support mobile browsers that may send requests via HTTP (e.g. behind proxies).
+  const trustedOrigins: string[] = [BETTER_AUTH_URL];
+  try {
+    const baseUrl = new URL(BETTER_AUTH_URL);
+    const domain = baseUrl.hostname;
+    const port = baseUrl.port ? `:${baseUrl.port}` : "";
+    trustedOrigins.push(`https://${domain}${port}`);
+    trustedOrigins.push(`http://${domain}${port}`);
+  } catch {
+    // If BETTER_AUTH_URL is malformed, trustedOrigins will just have the raw value
+  }
+
   return betterAuth({
     ...createAuthConfig(),
+    trustedOrigins: [...new Set(trustedOrigins)],
     socialProviders: {
       github: {
         clientId: GITHUB_CLIENT_ID,
