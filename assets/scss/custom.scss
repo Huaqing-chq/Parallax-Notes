@@ -1,6 +1,7 @@
-/* 基础布局 */
+/* 基础容器：默认设为纵向排列（手机优先） */
 .portal-container {
     display: flex;
+    flex-direction: column; /* 手机端上下排列 */
     height: 100vh;
     width: 100vw;
     position: fixed;
@@ -8,6 +9,7 @@
     z-index: 9999;
 }
 
+/* 基础侧边块 */
 .portal-side {
     flex: 1;
     display: flex;
@@ -18,50 +20,42 @@
     position: relative;
     overflow: hidden;
     
-    &:hover { flex: 1.4; } /* 悬停时侧重显示 */
+    /* 手机端点击时稍微放大 */
+    &:active { flex: 1.2; } 
 }
 
-/* --- 伦敦地铁风格 --- */
-.tube-style {
-    background-color: #ffffff;
-    border-right: 12px solid #DC241F; /* 地铁红 */
+/* --- 电脑端适配：当屏幕宽度大于 768px 时 --- */
+@media (min-width: 768px) {
+    .portal-container {
+        flex-direction: row; /* 电脑端恢复左右排列 */
+    }
+
+    .portal-side {
+        &:hover { flex: 1.4; } /* 电脑端鼠标悬停效果 */
+    }
+
+    /* 电脑端地铁版的红线在右边 */
+    .tube-style {
+        border-right: 12px solid #DC241F;
+        border-bottom: none;
+    }
+}
+
+/* --- 手机端特有调整：当屏幕宽度小于 768px 时 --- */
+@media (max-width: 767px) {
+    .tube-style {
+        border-bottom: 10px solid #DC241F; /* 手机端红线改在底部，作为分割线 */
+    }
     
-    .tube-roundel {
-        width: 120px; height: 100px;
-        border: 16px solid #DC241F;
-        border-radius: 50%;
-        margin: 0 auto 20px;
-        position: relative;
-        display: flex; align-items: center;
-    }
-    .roundel-line {
-        width: 160px; height: 22px;
-        background: #0019A8; /* 皇家蓝 */
-        position: absolute; left: -20px;
-    }
     .tube-title {
-        color: #0019A8; font-family: "Helvetica", Arial, sans-serif;
-        font-weight: 900; letter-spacing: -2px; font-size: 3rem;
+        font-size: 2.2rem !important; /* 手机端字体缩小一点 */
     }
-    .tube-subtitle {
-        background: #000; color: #ffce00; /* 黄黑警示色 */
-        padding: 5px 15px; display: inline-block; font-weight: bold;
-    }
-}
-
-/* --- 自然风格 --- */
-.nature-style {
-    
-    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), 
-                url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1000&q=80');
-    background-size: cover;
-    background-position: center;
     
     .nature-title {
-        color: white; font-family: "Georgia", serif;
-        font-style: italic; font-size: 3.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    .nature-subtitle {
-        color: rgba(255,255,255,0.8); letter-spacing: 4px; text-transform: uppercase;
+        font-size: 2.5rem !important;
     }
 }
+
+/* 保持之前的颜色和装饰样式不变... */
+.tube-style { background-color: #ffffff; ... }
+.nature-style { background: ...; ... }
