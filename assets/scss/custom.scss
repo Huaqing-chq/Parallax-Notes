@@ -35,6 +35,66 @@
 /* --- 伦敦地铁风格 (Modern) --- */
 .tube-style {
     background-color: #ffffff;
+    border-bottom: 10px solid #DC241F;
+
+    @media (min-width: 768px) {
+        border-bottom: none;
+        border-right: 12px solid #DC241F;
+    }
+
+    .tube-roundel {
+        width: 100px; height: 80px;
+        border: 15px solid #DC241F;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        position: relative;
+        display: flex; align-items: center;
+        justify-content: center;
+    }
+    .roundel-line {
+        width: 140px; height: 20px;
+        background: #0019A8;
+        position: absolute;
+    }
+    .tube-title {
+        color: #0019A8; 
+        font-family: Arial, sans-serif;
+        font-weight: 900; 
+        font-size: 2.5rem;
+        margin: 10px 0;
+        text-align: center;
+    }
+    .tube-subtitle {
+        background: #000; 
+        color: #ffce00;
+        padding: 5px 15px; 
+        font-weight: bold;
+        text-align: center;
+    }
+}
+
+/* --- 自然风格 (Nature) --- */
+.nature-style {
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+
+    .nature-title {
+        color: white; 
+        font-family: "Georgia", serif;
+        font-style: italic; 
+        font-size: 2.5rem;
+        text-align: center;
+    }
+    .nature-subtitle {
+        color: rgba(255,255,255,0.8); 
+        letter-spacing: 4px; 
+        text-transform: uppercase;
+        text-align: center;
+    }
+}
+    background-color: #ffffff;
     border-bottom: 10px solid #DC241F; /* 手机端下边框 */
 
     @media (min-width: 768px) {
@@ -92,5 +152,6 @@
         letter-spacing: 4px; 
         text-transform: uppercase;
         text-align: center;
-    }
+    }   
 }
+
