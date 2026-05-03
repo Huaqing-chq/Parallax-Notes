@@ -1,38 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="{{ .Site.LanguageCode }}">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Site.Title }}</title>
     
-    {{ $style := resources.Get "scss/custom.scss" }}
-    {{ if $style }}
-        {{ $options := dict "targetPath" "css/custom.css" "enableSourceMap" true }}
-        {{ $compiled := $style | toCSS $options | minify }}
-        <link rel="stylesheet" href="{{ $compiled.RelPermalink }}">
-    {{ else }}
-        <style>body { background: #333; color: white; }</style>
-    {{ end }}
+
+    <link rel="stylesheet" href="/css/custom-home.css">
 </head>
-
 <body>
-    <div class="portal-container">
-        <a href="/categories/modern/" class="portal-side tube-style">
-            <div class="portal-content">
-                <div class="tube-roundel">
-                    <span class="roundel-line"></span>
-                </div>
-                <h1 class="tube-title">MODERN</h1>
-                <p class="tube-subtitle">WAY OUT</p>
-            </div>
-        </a>
-
-        <a href="/categories/nature/" class="portal-side nature-style">
-            <div class="portal-content">
-                <h1 class="nature-title">NATURE</h1>
-                <p class="nature-subtitle">Into the Wilderness</p>
-            </div>
-        </a>
+    <div class="glass-card">
+        <h1 class="site-title">{{ .Site.Title }}</h1>
+        <a class="enter-btn" href="{{ "posts" | relURL }}">进入博客</a>
     </div>
 </body>
 </html>
