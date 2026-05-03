@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Site.Title }}</title>
     
-    {{ $style := resources.Get "scss/custom.scss" | resources.ToCSS (dict "targetPath" "css/custom.css") | resources.Minify }}
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    {{ $style := resources.Get "scss/custom.scss" }}
+    {{ if $style }}
+        {{ $options := dict "targetPath" "css/custom.css" "enableSourceMap" true }}
+        {{ $compiled := $style | toCSS $options | minify }}
+        <link rel="stylesheet" href="{{ $compiled.RelPermalink }}">
+    {{ else }}
+        <style>body { background: #333; color: white; }</style>
+    {{ end }}
 </head>
+
 <body>
     <div class="portal-container">
         <a href="/categories/modern/" class="portal-side tube-style">
