@@ -4,9 +4,91 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Site.Title }}</title>
-    
+    <style>
+        /* 暴力挖空所有背景层 */
+        html, body, div, main, section, article, 
+        header, footer, nav, aside,
+        .main-wrapper, .wrapper, .container, .content, 
+        .article, .post {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+        }
 
-    <link rel="stylesheet" href="/css/custom-home.css">
+        /* 全屏固定背景 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                         "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') 
+                        no-repeat center center fixed !important;
+            background-size: cover !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 毛玻璃卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 3rem 5rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            color: #fff;
+            z-index: 1;
+        }
+
+        .site-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 0 0 2.5rem 0;
+            color: #fff !important;
+            letter-spacing: 0.02em;
+        }
+
+        /* 进入博客按钮 */
+        .enter-btn {
+            display: inline-block;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #fff !important;
+            text-decoration: none;
+            padding: 0.8rem 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .enter-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
+        }
+
+        @media (max-width: 600px) {
+            .glass-card {
+                padding: 2rem 1.5rem;
+                margin: 0 1rem;
+            }
+            .site-title {
+                font-size: 2rem;
+            }
+            .enter-btn {
+                font-size: 1.2rem;
+                padding: 0.6rem 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="glass-card">
