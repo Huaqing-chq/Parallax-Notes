@@ -9,7 +9,7 @@ body, html {
     background-color: #1a1a1a; /* 兜底背景色 */
 }
 
-/* --- 核心背景：双端自适应 --- */
+/* --- 背景 --- */
 .full-background {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -17,24 +17,23 @@ body, html {
     background-repeat: no-repeat;
     background-size: cover;
     z-index: -1;
-    transition: background-image 0.5s ease-in-out;
+    
+    /* 强制使用网站根目录绝对路径 */
+    background-image: url('/background-mobile.png') !important;
 
-    /* 默认加载手机版背景图 */
-    background-image: url('/background-mobile.png');
-
-    /* 当屏幕宽度大于 768px 时，切换为桌面版背景图 */
     @media (min-width: 768px) {
-        background-image: url('/background-desktop.png');
+        background-image: url('/background-desktop.png') !important;
     }
 
-    /* 添加一个淡淡的暗色遮罩，确保文字更好读 */
+    /* 遮罩层：防止背景太亮导致文字看不清 */
     &::after {
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0.2); 
     }
 }
+
 
 /* --- 毛玻璃容器 --- */
 .glass-container {
