@@ -18,22 +18,38 @@ body, html {
     background-size: cover;
     z-index: -1;
     
-    /* 强制使用网站根目录绝对路径 */
-    background-image: url('/background-mobile.png') !important;
+    
+    background-image: url('https://s41.ax1x.com/2026/05/03/pe75XUs.png') !important;
 
     @media (min-width: 768px) {
-        background-image: url('/background-desktop.png') !important;
+        
+        background-image: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') !important;
     }
 
-    /* 遮罩层：防止背景太亮导致文字看不清 */
     &::after {
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.2); 
+        background: rgba(0, 0, 0, 0.3); 
     }
 }
 
+/* 文字颜色和毛玻璃兼容性 */
+.glass-container {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.nav-item {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    
+    .en, .cn {
+        color: #ffffff !important;
+    }
+}
 
 /* --- 毛玻璃容器 --- */
 .glass-container {
