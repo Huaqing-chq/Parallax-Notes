@@ -1,21 +1,31 @@
-<h1>这是我的双相大门测试</h1>
-{{ define "main" }}
-<div class="portal-container">
-    <a href="/categories/modern/" class="portal-side tube-style">
-        <div class="portal-content">
-            <div class="tube-roundel">
-                <span class="roundel-line"></span>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Site.Title }}</title>
+    
+    {{ $style := resources.Get "scss/custom.scss" | resources.ToCSS (dict "targetPath" "css/custom.css") | resources.Minify }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+</head>
+<body>
+    <div class="portal-container">
+        <a href="/categories/modern/" class="portal-side tube-style">
+            <div class="portal-content">
+                <div class="tube-roundel">
+                    <span class="roundel-line"></span>
+                </div>
+                <h1 class="tube-title">MODERN</h1>
+                <p class="tube-subtitle">WAY OUT</p>
             </div>
-            <h1 class="tube-title">MODERN</h1>
-            <p class="tube-subtitle">WAY OUT</p>
-        </div>
-    </a>
+        </a>
 
-    <a href="/categories/nature/" class="portal-side nature-style">
-        <div class="portal-content">
-            <h1 class="nature-title">NATURE</h1>
-            <p class="nature-subtitle">Into the Wilderness</p>
-        </div>
-    </a>
-</div>
-{{ end }}
+        <a href="/categories/nature/" class="portal-side nature-style">
+            <div class="portal-content">
+                <h1 class="nature-title">NATURE</h1>
+                <p class="nature-subtitle">Into the Wilderness</p>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
