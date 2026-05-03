@@ -1,136 +1,91 @@
-/* --- 基础重置 --- */
-body, html {
-    margin: 0; padding: 0;
-    height: 100%; width: 100%;
-    font-family: 'Noto Serif SC', serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #1a1a1a; /* 兜底背景色 */
+/* ==========================================
+  挖空主题所有背景层
+   ========================================== */
+html, body, div, main, section, article, 
+header, footer, nav, aside,
+.main-wrapper, .wrapper, .container, .content, 
+.article, .post {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
 }
 
-/* --- 背景 --- */
-.full-background {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    z-index: -1;
-    
-    
-    background-image: url('https://s41.ax1x.com/2026/05/03/pe75XUs.png') !important;
-
-    @media (min-width: 768px) {
-        
-        background-image: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') !important;
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.3); 
-    }
-}
-
-/* 文字颜色和毛玻璃兼容性 */
-.glass-container {
-    background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-.nav-item {
-    color: #ffffff !important;
-    text-decoration: none !important;
-    
-    .en, .cn {
-        color: #ffffff !important;
-    }
-}
-
-/* --- 毛玻璃容器 --- */
-.glass-container {
-    background: rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(18px); /* 磨砂感加重一点更高级 */
-    -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 24px;
-    padding: 50px 70px;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    max-width: 85%;
-}
-
-/* --- 标题与文字 --- */
-.site-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    color: #ffffff;
+/* ==========================================
+   全屏固定背景图（直链）
+   ========================================== */
+html, body {
     margin: 0;
-    letter-spacing: 3px;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                 "Helvetica Neue", Arial, sans-serif;
 }
 
-.site-tagline {
-    color: rgba(255,255,255,0.85);
-    font-size: 1rem;
-    letter-spacing: 6px;
-    margin-top: 15px;
-    font-weight: 300;
-}
-
-/* --- 导航链接 --- */
-.glass-nav {
+body {
+    background: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') 
+                no-repeat center center fixed !important;
+    background-size: cover !important;
     display: flex;
-    margin-top: 50px;
     align-items: center;
     justify-content: center;
-    gap: 40px;
 }
 
-.nav-item {
+/* ==========================================
+   毛玻璃卡片
+   ========================================== */
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);        /* 半透白底 */
+    backdrop-filter: blur(20px);                 /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px);         /* Safari 兼容 */
+    border-radius: 2rem;
+    padding: 3rem 5rem;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    color: #fff;                                 /* 强制白色文字 */
+    z-index: 1;
+}
+
+/* 博客名 */
+.site-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0 0 2.5rem 0;
+    color: #fff !important;                      /* 强制纯白 */
+    letter-spacing: 0.02em;
+}
+
+/* 进入博客按钮 */
+.enter-btn {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #fff !important;
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    color: #ffffff;
-    transition: all 0.3s ease;
-
-    .en {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.4rem;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-    .cn {
-        font-size: 0.75rem;
-        opacity: 0.7;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-    }
-
-    &:hover {
-        transform: translateY(-3px);
-        opacity: 0.8;
-        text-shadow: 0 0 15px rgba(255,255,255,0.5);
-    }
+    padding: 0.8rem 2.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    transition: background 0.3s, border-color 0.3s;
 }
 
-.divider {
-    width: 1px;
-    height: 40px;
-    background: rgba(255,255,255,0.3);
+.enter-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #fff;
 }
 
-/* --- 移动端细节微调 --- */
-@media (max-width: 767px) {
-    .glass-container {
-        padding: 40px 25px;
-        width: 85%;
+/* 响应式 */
+@media (max-width: 600px) {
+    .glass-card {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
     }
-    .site-title { font-size: 2.2rem; }
-    .glass-nav { gap: 25px; }
+    .site-title {
+        font-size: 2rem;
+    }
+    .enter-btn {
+        font-size: 1.2rem;
+        padding: 0.6rem 2rem;
+    }
 }
