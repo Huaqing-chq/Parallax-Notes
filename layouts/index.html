@@ -83,23 +83,24 @@
             transform: translateY(-2px);
         }
 
-        /* ===== 副卡片：独立分层监控胶囊 ===== */
-        .status-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px; /* 胶囊长条状 */
-            padding: 1rem 2.5rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            z-index: 2;
-            min-width: 320px;
-            max-width: 85vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+        /* ===== 副卡片：独立分层监控面板 ===== */
+.status-card {
+    background: rgba(0, 0, 0, 0.25); /* 稍微调深一点背景，为了压住里面复杂的监控信息 */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem; /* 改回常规圆角，因为里面要放一整个面板 */
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    width: 380px;  
+    max-width: 90vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
 
         /* 强制覆盖 Statuspage 脚本渲染出的白色背景，让其变透明 */
         .status-card iframe, .color-white {
