@@ -28,13 +28,112 @@
             background: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') 
                         no-repeat center center fixed !important;
             background-size: cover !important;
+            /* 垂直排列卡片，整体居中 */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 1.8rem;          /* 主卡片与状态条的间距 */
         }
 
-        /* 毛玻璃卡片 */
-        .glass-card {
+        /* ===== 主卡片：标题 + 按钮 ===== */
+        .glass-card-main {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            /* 大幅增加内部留白 */
+            padding: 3.5rem 5rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            color: #fff;
+            z-index: 1;
+            min-width: 300px;
+            max-width: 90vw;
+        }
+
+        .site-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 0 0 2rem 0;
+            color: #fff !important;
+            letter-spacing: 0.03em;
+        }
+
+        .enter-btn {
+            display: inline-block;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #fff !important;
+            text-decoration: none;
+            padding: 0.8rem 2.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .enter-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
+        }
+
+        /* ===== 独立状态条（副卡片） ===== */
+        .status-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 1.5rem;
+            padding: 1.5rem 2.5rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 280px;
+            max-width: 90vw;
+            /* 让嵌入的内容自适应宽度 */
+            overflow: hidden;
+        }
+
+        /* 状态嵌入内容微调 */
+        .status-card iframe {
+            width: 100% !important;
+            border: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .glass-card-main {
+                padding: 2.5rem 2rem;
+            }
+            .site-title {
+                font-size: 2rem;
+            }
+            .enter-btn {
+                font-size: 1.2rem;
+                padding: 0.6rem 2rem;
+            }
+            .status-card {
+                padding: 1rem 1.5rem;
+            }
+            body {
+                gap: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主卡片：纯净的品牌区域 -->
+    <div class="glass-card-main">
+        <h1 class="site-title">{{ .Site.Title }}</h1>
+        <a class="enter-btn" href="{{ "posts" | relURL }}">进入博客</a>
+    </div>
+
+    <!-- 副卡片：独立的技术状态挂件 -->
+    <div class="status-card">
+        <script src="https://galaxypedia2.statuspage.io/embed/script.js"></script>
+    </div>
+</body>
+</html>        .glass-card {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
