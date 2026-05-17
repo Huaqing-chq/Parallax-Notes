@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>银河系手记</title>
     <style>
-        
+        /* 暴力挖空全站主题背景，露出最底层森林 */
         html, body, div, main, section, article, 
         header, footer, nav, aside,
         .main-wrapper, .wrapper, .container, .content, 
@@ -25,17 +25,26 @@
         }
 
         body {
-            
+            /* 完美的森林背景图直链 */
             background: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') no-repeat center center fixed !important;
             background-size: cover !important;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2rem; 
+            gap: 1.5rem; /* 主卡片与下方监控挂件的完美呼吸间距 */
         }
 
-
+        /* ===== 顶端电影感全大写标语 ===== */
+        .space-lyrics {
+            color: rgba(240, 80, 80, 0.85);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            font-weight: 300;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: -0.5rem;
+        }
 
         /* ===== 主卡片：标题 + 进入按钮 ===== */
         .glass-card-main {
@@ -49,7 +58,7 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
             color: #fff;
             z-index: 2;
-            min-width: 320px;
+            width: 380px;
             max-width: 85vw;
         }
 
@@ -83,55 +92,89 @@
             transform: translateY(-2px);
         }
 
-        /* ===== 副卡片：独立分层监控面板 ===== */
-.status-card {
-    background: rgba(0, 0, 0, 0.25); /* 稍微调深一点背景，为了压住里面复杂的监控信息 */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem; /* 改回常规圆角，因为里面要放一整个面板 */
-    padding: 1rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    z-index: 2;
-    width: 380px;  
-    max-width: 90vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-
-        /* 强制覆盖 Statuspage 脚本渲染出的白色背景，让其变透明 */
-        .status-card iframe, .color-white {
-            background: transparent !important;
-            background-color: transparent !important;
+        /* ===== 副卡片：独立精致监控舱 ===== */
+        .status-card-api {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            width: 380px;
+            max-width: 85vw;
+            color: #fff;
+            box-sizing: border-box;
         }
+
+        .status-header {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .node-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* 精致的小状态呼吸灯 */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* 动态匹配 API 传过来的状态颜色 */
+        .status-dot.operational { background: #2ecc71; box-shadow: 0 0 8px #2ecc71; }
+        .status-dot.degraded_performance { background: #f1c40f; box-shadow: 0 0 8px #f1c40f; }
+        .status-dot.partial_outage { background: #e67e22; box-shadow: 0 0 8px #e67e22; }
+        .status-dot.major_outage { background: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
+
+        .status-tag {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .status-tag.operational { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); }
+        .status-tag.degraded_performance { background: rgba(241, 196, 15, 0.2); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); }
+        .status-tag.partial_outage { background: rgba(230, 126, 34, 0.2); color: #e67e22; border: 1px solid rgba(230, 126, 34, 0.4); }
+        .status-tag.major_outage { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.4); }
 
         /* 手机端完美适配 */
         @media (max-width: 600px) {
-            .space-lyrics {
-                font-size: 0.75rem;
-                text-align: center;
-                padding: 0 1rem;
-            }
-            .glass-card-main {
-                padding: 3rem 2rem;
-            }
-            .site-title {
-                font-size: 2.2rem;
-            }
-            .enter-btn {
-                font-size: 1.1rem;
-                padding: 0.7rem 2.5rem;
-            }
-            .status-card {
-                padding: 0.8rem 1.5rem;
-                border-radius: 20px;
-            }
-            body {
-                gap: 1.5rem;
-            }
+            .space-lyrics { font-size: 0.75rem; text-align: center; }
+            .glass-card-main { padding: 3rem 2rem; width: 85vw; }
+            .site-title { font-size: 2.2rem; }
+            .enter-btn { font-size: 1.1rem; padding: 0.7rem 2.5rem; }
+            .status-card-api { width: 85vw; padding: 1.2rem; }
         }
     </style>
 </head>
@@ -144,14 +187,61 @@
         <a class="enter-btn" href="{{ "posts" | relURL }}">进入博客</a>
     </div>
 
-    <div class="status-card">
-        <iframe 
-            src="https://galaxypedia2.statuspage.io" 
-            style="width: 100%; height: 260px; border: none; overflow: hidden;" 
-            scrolling="no">
-        </iframe>
+    <div class="status-card-api">
+        <div class="status-header">服务状态</div>
+        <div class="status-list" id="galaxy-status-nodes">
+            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.4);">连接中...</div>
+        </div>
     </div>
 
-</body>
+    <script>
+        // 映射 Statuspage.io 的状态值到我们的优雅前端展示
+        const statusConfig = {
+            'operational': { text: '正常', class: 'operational' },
+            'degraded_performance': { text: '延迟', class: 'degraded_performance' },
+            'partial_outage': { text: '波动', class: 'partial_outage' },
+            'major_outage': { text: '异常', class: 'major_outage' }
+        };
 
+        async function fetchGalaxyStatus() {
+            const container = document.getElementById('galaxy-status-nodes');
+            try {
+                // 请求 Statuspage 公开的免费 Summary API
+                const response = await fetch('https://galaxypedia2.statuspage.io/api/v2/summary.json');
+                const data = await response.json();
+                
+                // 过滤出你的组件（比如元维基、银河百科全书等）
+                const components = data.components || [];
+                
+                let htmlContent = '';
+                components.forEach(node => {
+                    // 排除掉不必要的根节点组件（如果有的话）
+                    if (node.name.includes("Page")) return; 
+
+                    const config = statusConfig[node.status] || { text: '未知', class: '' };
+                    
+                    htmlContent += `
+                        <div class="status-item">
+                            <div class="node-info">
+                                <span class="status-dot ${config.class}"></span>
+                                <span>${node.name}</span>
+                            </div>
+                            <span class="status-tag ${config.class}">${config.text}</span>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = htmlContent || '<div style="font-size:0.85rem;color:rgba(255,255,255,0.4);">未检测到活跃节点</div>';
+            } catch (error) {
+                console.error('连接线失败:', error);
+                container.innerHTML = '<div style="font-size:0.85rem;color:#e74c3c;">星际通信中断 (API Error)</div>';
+            }
+        }
+
+        // 初始化加载并设置 60 秒定时同步
+        fetchGalaxyStatus();
+        setInterval(fetchGalaxyStatus, 60000);
+    </script>
+
+</body>
 </html>
