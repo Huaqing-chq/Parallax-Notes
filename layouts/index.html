@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Site.Title }}</title>
+    <title>银河系手记</title>
     <style>
-        /* 暴力挖空主题背景 */
+        
         html, body, div, main, section, article, 
         header, footer, nav, aside,
         .main-wrapper, .wrapper, .container, .content, 
-        .article, .post {
+        .article, .post, .widget {
             background: transparent !important;
             background-color: transparent !important;
             background-image: none !important;
@@ -20,336 +20,132 @@
             padding: 0;
             width: 100%;
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-                         "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
         }
 
         body {
-            background: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') 
-                        no-repeat center center fixed !important;
+            
+            background: url('https://s41.ax1x.com/2026/05/03/pe75OEj.png') no-repeat center center fixed !important;
             background-size: cover !important;
-            /* 垂直排列卡片，整体居中 */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1.8rem;          /* 主卡片与状态条的间距 */
+            gap: 2rem; 
         }
 
-        /* ===== 主卡片：标题 + 按钮 ===== */
+
+
+        /* ===== 主卡片：标题 + 进入按钮 ===== */
         .glass-card-main {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 2rem;
-            /* 大幅增加内部留白 */
-            padding: 3.5rem 5rem;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 2.5rem;
+            padding: 4rem 6rem;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
             color: #fff;
-            z-index: 1;
-            min-width: 300px;
-            max-width: 90vw;
+            z-index: 2;
+            min-width: 320px;
+            max-width: 85vw;
         }
 
         .site-title {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin: 0 0 2rem 0;
+            margin: 0 0 2.5rem 0;
             color: #fff !important;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .enter-btn {
-            display: inline-block;
-            font-size: 1.4rem;
-            font-weight: 500;
-            color: #fff !important;
-            text-decoration: none;
-            padding: 0.8rem 2.8rem;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 2rem;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .enter-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: #fff;
-        }
-
-        /* ===== 独立状态条（副卡片） ===== */
-        .status-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 1.5rem;
-            padding: 1.5rem 2.5rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            min-width: 280px;
-            max-width: 90vw;
-            /* 让嵌入的内容自适应宽度 */
-            overflow: hidden;
-        }
-
-        /* 状态嵌入内容微调 */
-        .status-card iframe {
-            width: 100% !important;
-            border: none;
-        }
-
-        /* 响应式 */
-        @media (max-width: 600px) {
-            .glass-card-main {
-                padding: 2.5rem 2rem;
-            }
-            .site-title {
-                font-size: 2rem;
-            }
-            .enter-btn {
-                font-size: 1.2rem;
-                padding: 0.6rem 2rem;
-            }
-            .status-card {
-                padding: 1rem 1.5rem;
-            }
-            body {
-                gap: 1.2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- 主卡片：纯净的品牌区域 -->
-    <div class="glass-card-main">
-        <h1 class="site-title">{{ .Site.Title }}</h1>
-        <a class="enter-btn" href="{{ "posts" | relURL }}">进入博客</a>
-    </div>
-
-    <!-- 副卡片：独立的技术状态挂件 -->
-    <div class="status-card">
-        <script src="https://galaxypedia2.statuspage.io/embed/script.js"></script>
-    </div>
-</body>
-</html>        .glass-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 2rem;
-            padding: 2.5rem 3rem;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-            color: #fff;
-            z-index: 1;
-            min-width: 300px;
-            max-width: 90vw;
-        }
-
-        .site-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0 0 1.8rem 0;
-            color: #fff !important;
-            letter-spacing: 0.02em;
-        }
-
-        /* 进入博客按钮 */
         .enter-btn {
             display: inline-block;
             font-size: 1.3rem;
             font-weight: 500;
             color: #fff !important;
             text-decoration: none;
-            padding: 0.7rem 2.2rem;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 2rem;
-            background: rgba(255, 255, 255, 0.15);
+            padding: 0.8rem 3.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(5px);
-            transition: background 0.3s, border-color 0.3s;
-            margin-bottom: 2rem;
+            transition: all 0.3s ease;
         }
 
         .enter-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
-        /* 状态看板 */
-        .status-section {
-            margin-top: 1rem;
-            text-align: left;
-        }
-
-        .status-section .label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.8rem;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .status-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .status-item {
+        /* ===== 副卡片：独立分层监控胶囊 ===== */
+        .status-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px; /* 胶囊长条状 */
+            padding: 1rem 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+            min-width: 320px;
+            max-width: 85vw;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            padding: 0.6rem 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            font-size: 0.95rem;
-            transition: background 0.2s;
+            overflow: hidden;
         }
 
-        .status-item:last-child {
-            border-bottom: none;
+        /* 强制覆盖 Statuspage 脚本渲染出的白色背景，让其变透明 */
+        .status-card iframe, .color-white {
+            background: transparent !important;
+            background-color: transparent !important;
         }
 
-        .status-item:hover {
-            background: rgba(255,255,255,0.1);
-            border-radius: 0.6rem;
-        }
-
-        .site-name {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-weight: 500;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #777;
-            flex-shrink: 0;
-        }
-
-        .status-dot.online  { background: #4ade80; }
-        .status-dot.paused  { background: #facc15; }
-        .status-dot.offline { background: #f87171; }
-
-        .status-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .uptime-ratio {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .status-tag {
-            font-size: 0.8rem;
-            padding: 0.15rem 0.6rem;
-            border-radius: 1rem;
-            background: rgba(255,255,255,0.2);
-        }
-
-        .status-tag.online  { background: rgba(74, 222, 128, 0.3); }
-        .status-tag.paused  { background: rgba(250, 204, 21, 0.3); }
-        .status-tag.offline { background: rgba(248, 113, 113, 0.3); }
-
-        /* 响应式 */
+        /* 手机端完美适配 */
         @media (max-width: 600px) {
-            .glass-card {
-                padding: 2rem 1.5rem;
+            .space-lyrics {
+                font-size: 0.75rem;
+                text-align: center;
+                padding: 0 1rem;
+            }
+            .glass-card-main {
+                padding: 3rem 2rem;
             }
             .site-title {
-                font-size: 1.8rem;
+                font-size: 2.2rem;
             }
             .enter-btn {
                 font-size: 1.1rem;
-                padding: 0.5rem 1.8rem;
+                padding: 0.7rem 2.5rem;
             }
-            .status-item {
-                font-size: 0.85rem;
-                flex-wrap: wrap;
+            .status-card {
+                padding: 0.8rem 1.5rem;
+                border-radius: 20px;
+            }
+            body {
+                gap: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="glass-card">
-        <h1 class="site-title">{{ .Site.Title }}</h1>
-        <a class="enter-btn" href="{{ "posts" | relURL }}">进入博客</a>
 
-        <div class="status-section">
-            <div class="label">服务状态</div>
-            <ul class="status-list" id="statusList">
-                <li class="status-item">
-                    <span class="site-name"><span class="status-dot"></span>加载中...</span>
-                </li>
-            </ul>
-        </div>
+    <div class="space-lyrics">Lost our gravity now we're weightless</div>
+
+    <div class="glass-card-main">
+        <h1 class="site-title">银河系手记</h1>
+        <a class="enter-btn" href="{{ "posts" | relURL }}">进入博客</a>
     </div>
 
-    <script>
-        // ===== 直接在前端调用 UptimeRobot API =====
-        const API_KEY = 'm802975533-078064ade96fd64d2f0d9810';  // 你的只读密钥
-        const MONITOR_IDS = ['802975533']; // 替换成你的监视器ID，支持多个
+    <div class="status-card">
+        <script src="https://galaxypedia2.statuspage.io/embed/script.js"></script>
+    </div>
 
-        const statusMap = {
-            0: { class: 'paused',  text: '暂停' },
-            1: { class: 'offline', text: '异常' },
-            2: { class: 'online',  text: '正常' },
-            8: { class: 'offline', text: '异常' },
-            9: { class: 'offline', text: '宕机' }
-        };
-
-        async function loadStatus() {
-            const list = document.getElementById('statusList');
-            try {
-                // 逐个请求（简单方式，也可合并为一次请求多个监视器）
-                const results = await Promise.all(
-                    MONITOR_IDS.map(id => {
-                        const body = new URLSearchParams({
-                            api_key: API_KEY,
-                            monitors: id,
-                            format: 'json'
-                        });
-                        return fetch('https://api.uptimerobot.com/v2/getMonitors', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body
-                        }).then(res => res.json());
-                    })
-                );
-
-                let html = '';
-                results.forEach(data => {
-                    const monitor = data.monitors?.[0];
-                    if (!monitor) return;
-                    const status = monitor.status;
-const info = statusMap[status] || { class: '', text: '未知' };
-                    const uptime = monitor.custom_uptime_ratio || '—';
-                    html += `
-                        <li class="status-item">
-                            <span class="site-name">
-                                <span class="status-dot ${info.class}"></span>
-                                ${monitor.friendly_name}
-                            </span>
-                            <span class="status-right">
-                                <span class="uptime-ratio">${uptime}%</span>
-                                <span class="status-tag ${info.class}">${info.text}</span>
-                            </span>
-                        </li>`;
-                });
-                list.innerHTML = html || '<li class="status-item">无监视器数据</li>';
-            } catch (err) {
-                list.innerHTML = '<li class="status-item">状态获取失败</li>';
-            }
-        }
-
-        loadStatus();
-        // 每隔 60 秒自动刷新
-        setInterval(loadStatus, 60000);
-    </script>
 </body>
 </html>
