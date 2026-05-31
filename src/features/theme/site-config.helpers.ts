@@ -12,6 +12,11 @@ export function getThemePreloadImages(siteConfig: SiteConfig): Array<string> {
         siteConfig.theme.default.background?.homeImage,
         siteConfig.theme.default.background?.globalImage,
       ].filter((image): image is string => Boolean(image));
+    case "windglass":
+      return [
+        siteConfig.theme.windglass.background?.homeImage,
+        siteConfig.theme.windglass.background?.globalImage,
+      ].filter((image): image is string => Boolean(image));
     default:
       __THEME_NAME__ satisfies never;
       return [];

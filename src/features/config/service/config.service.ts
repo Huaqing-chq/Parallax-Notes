@@ -85,6 +85,8 @@ export function resolveSiteConfig(
   config: SystemConfig | null | undefined,
 ): SiteConfig {
   const configDefaultBackground = config?.site?.theme?.default?.background;
+  const configWindglassBackground = config?.site?.theme?.windglass?.background;
+  const windglassBackground = configWindglassBackground ?? configDefaultBackground;
 
   return FullSiteConfigSchema.parse({
     title: config?.site?.title ?? blogConfig.title,
@@ -131,6 +133,31 @@ export function resolveSiteConfig(
         primaryHue:
           config?.site?.theme?.fuwari?.primaryHue ??
           blogConfig.theme.fuwari.primaryHue,
+      },
+      windglass: {
+        navBarName:
+          config?.site?.theme?.windglass?.navBarName ??
+          blogConfig.theme.windglass.navBarName,
+        background: windglassBackground
+          ? {
+              homeImage:
+                windglassBackground.homeImage ??
+                configDefaultBackground?.homeImage ??
+                "",
+              globalImage:
+                windglassBackground.globalImage ??
+                configDefaultBackground?.globalImage ??
+                "",
+              light: {
+                opacity: windglassBackground.light?.opacity ?? 0.32,
+              },
+              dark: {
+                opacity: windglassBackground.dark?.opacity ?? 0.24,
+              },
+              backdropBlur: windglassBackground.backdropBlur ?? 0,
+              transitionDuration: windglassBackground.transitionDuration ?? 600,
+            }
+          : undefined,
       },
     },
   });
