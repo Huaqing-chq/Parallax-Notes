@@ -1,0 +1,811 @@
+/* WindGlass — iOS 26 Liquid Glass design system */
+@import "tailwindcss";
+@import "@/styles/shared.css";
+
+/* ─── Glass surface utilities ─────────────────────────────────────────────── */
+
+@layer utilities {
+  .wg-ambient {
+    --wg-bg-opacity: var(--wg-bg-opacity-light, 0.42);
+    background:
+      radial-gradient(130% 100% at 8% 6%, rgba(56, 189, 248, 0.42), transparent 52%),
+      radial-gradient(100% 90% at 85% 12%, rgba(244, 114, 182, 0.32), transparent 50%),
+      radial-gradient(95% 95% at 18% 82%, rgba(52, 211, 153, 0.30), transparent 52%),
+      radial-gradient(110% 100% at 86% 86%, rgba(251, 191, 36, 0.24), transparent 54%),
+      linear-gradient(180deg, #f0f5ff 0%, #e8f4f8 50%, #f5eeff 100%);
+    overflow: hidden;
+  }
+
+  .dark .wg-ambient {
+    --wg-bg-opacity: var(--wg-bg-opacity-dark, 0.32);
+    background:
+      radial-gradient(120% 95% at 12% 8%, rgba(14, 165, 233, 0.36), transparent 52%),
+      radial-gradient(100% 90% at 90% 10%, rgba(217, 70, 239, 0.26), transparent 50%),
+      radial-gradient(95% 95% at 14% 85%, rgba(16, 185, 129, 0.22), transparent 52%),
+      radial-gradient(110% 100% at 90% 88%, rgba(245, 158, 11, 0.18), transparent 54%),
+      linear-gradient(180deg, #080c18 0%, #0a1520 50%, #120a1c 100%);
+  }
+
+  .wg-ambient-image {
+    position: absolute;
+    inset: -48px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(var(--wg-bg-blur, 0px)) saturate(1.4) brightness(1.08);
+    transform: scale(1.03);
+    will-change: opacity;
+  }
+
+  .wg-ambient-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(255, 255, 255, 0.06) 100%);
+  }
+
+  .dark .wg-ambient-vignette {
+    background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.18) 100%);
+  }
+
+  /*
+   * Primary glass — navbar, modal, dialog
+   * Liquid Glass: transparent body + high saturate/brightness to refract ambient colors.
+   * Edge highlight via inset shadows simulating light hitting the glass bevel.
+   */
+  .wg-glass {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04) 50%, rgba(255, 255, 255, 0.10));
+    backdrop-filter: blur(20px) saturate(200%) brightness(1.15);
+    -webkit-backdrop-filter: blur(20px) saturate(200%) brightness(1.15);
+    border: 0.5px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.7),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.15);
+  }
+
+  /*
+   * Glass ::before — top-left specular highlight (light source at 135deg)
+   * Creates the "glass thickness" illusion via diagonal brightness.
+   */
+  .wg-glass::before,
+  .wg-glass-card::before,
+  .wg-glass-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+
+  /*
+   * Glass ::after — edge prismatic glow (rainbow refraction at border)
+   * A conic gradient clipped to the border ring.
+   */
+  .wg-glass::after,
+  .wg-glass-card::after,
+  .wg-glass-pill::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from 180deg,
+      rgba(255, 255, 255, 0.4),
+      rgba(125, 211, 252, 0.3),
+      rgba(167, 139, 250, 0.25),
+      rgba(244, 114, 182, 0.2),
+      rgba(251, 191, 36, 0.2),
+      rgba(52, 211, 153, 0.25),
+      rgba(125, 211, 252, 0.3),
+      rgba(255, 255, 255, 0.4)
+    );
+    mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+    -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    opacity: 0.5;
+    transition: opacity 220ms ease;
+  }
+
+  .dark .wg-glass {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.06));
+    border: 0.5px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.15),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.05);
+  }
+
+  /*
+   * Card glass — post cards, panels
+   * Higher transparency + stronger refraction via saturate/brightness.
+   * Background colors should bleed through naturally.
+   */
+  .wg-glass-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.08));
+    backdrop-filter: blur(18px) saturate(210%) brightness(1.18);
+    -webkit-backdrop-filter: blur(18px) saturate(210%) brightness(1.18);
+    border: 0.5px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.07),
+      inset 0 1px 1px rgba(255, 255, 255, 0.6),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.12);
+  }
+
+  .dark .wg-glass-card {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.015) 50%, rgba(255, 255, 255, 0.04));
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.12),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.04);
+  }
+
+  /* Subtle glass — tags, badges, secondary UI */
+  .wg-glass-subtle {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px) saturate(180%) brightness(1.10);
+    -webkit-backdrop-filter: blur(12px) saturate(180%) brightness(1.10);
+    border: 0.5px solid rgba(255, 255, 255, 0.42);
+    box-shadow: inset 0 0.5px 0.5px rgba(255, 255, 255, 0.5);
+  }
+
+  .dark .wg-glass-subtle {
+    background: rgba(255, 255, 255, 0.06);
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 0.5px 0.5px rgba(255, 255, 255, 0.08);
+  }
+
+  /* Pill button — iOS 26 style rounded capsule glass button */
+  .wg-glass-pill {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.14));
+    backdrop-filter: blur(20px) saturate(220%) brightness(1.20);
+    -webkit-backdrop-filter: blur(20px) saturate(220%) brightness(1.20);
+    border: 0.5px solid rgba(255, 255, 255, 0.55);
+    border-radius: 999px;
+    box-shadow:
+      0 6px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.65),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+  }
+
+  .dark .wg-glass-pill {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.025) 50%, rgba(255, 255, 255, 0.07));
+    border: 0.5px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 6px 24px rgba(0, 0, 0, 0.4),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.14),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.05);
+  }
+
+  /*
+   * Navbar glass — a thin floating glass bar pinned to the top.
+   * Top state (default): almost invisible so it feels like it floats over
+   * the page. Scrolled state (.is-scrolled): glass solidifies for legibility.
+   */
+  .wg-nav {
+    isolation: isolate;
+    overflow: visible;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+    backdrop-filter: blur(14px) saturate(180%) brightness(1.12);
+    -webkit-backdrop-filter: blur(14px) saturate(180%) brightness(1.12);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.28);
+    box-shadow: inset 0 0.5px 0.5px rgba(255, 255, 255, 0.45);
+    transition:
+      background 400ms ease,
+      backdrop-filter 400ms ease,
+      box-shadow 400ms ease,
+      border-color 400ms ease;
+  }
+
+  .wg-nav.is-scrolled {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08));
+    backdrop-filter: blur(24px) saturate(200%) brightness(1.15);
+    -webkit-backdrop-filter: blur(24px) saturate(200%) brightness(1.15);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 6px 28px rgba(0, 0, 0, 0.06),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.65);
+  }
+
+  .dark .wg-nav {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0.5px 0.5px rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .wg-nav.is-scrolled {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 6px 28px rgba(0, 0, 0, 0.32),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.14);
+  }
+
+  /*
+   * Footer glass — a centered floating capsule, NOT a full-width banner.
+   * Higher transparency than the navbar so it reads as a light glass chip.
+   */
+  .wg-footer-glass {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.07));
+    backdrop-filter: blur(18px) saturate(190%) brightness(1.14);
+    -webkit-backdrop-filter: blur(18px) saturate(190%) brightness(1.14);
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    box-shadow:
+      0 8px 30px rgba(0, 0, 0, 0.06),
+      inset 0 1px 1px rgba(255, 255, 255, 0.55),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.12);
+  }
+
+  .dark .wg-footer-glass {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015) 50%, rgba(255, 255, 255, 0.04));
+    border: 0.5px solid rgba(255, 255, 255, 0.13);
+    box-shadow:
+      0 8px 30px rgba(0, 0, 0, 0.35),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.12);
+  }
+
+  /* Overlay glass — mobile menu full-screen */
+  .wg-glass-overlay {
+    background: rgba(240, 245, 255, 0.65);
+    backdrop-filter: blur(48px) saturate(200%) brightness(1.1);
+    -webkit-backdrop-filter: blur(48px) saturate(200%) brightness(1.1);
+  }
+
+  .dark .wg-glass-overlay {
+    background: rgba(6, 6, 18, 0.72);
+    backdrop-filter: blur(48px) saturate(200%) brightness(1.05);
+    -webkit-backdrop-filter: blur(48px) saturate(200%) brightness(1.05);
+  }
+
+  /* Interactive press feedback */
+  .wg-pressable {
+    transition:
+      transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      filter 160ms ease,
+      box-shadow 160ms ease;
+    touch-action: manipulation;
+  }
+
+  .wg-pressable:active {
+    transform: scale(0.97);
+    filter: brightness(1.08);
+  }
+
+  /* Hover float lift */
+  .wg-hover-lift {
+    transition:
+      transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 280ms ease;
+  }
+
+  .wg-hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 40px rgba(0, 0, 0, 0.10),
+      inset 0 1px 1px rgba(255, 255, 255, 0.7),
+      inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.2);
+  }
+
+  .wg-hover-lift:hover::after {
+    opacity: 0.75;
+  }
+
+  .dark .wg-hover-lift:hover {
+    box-shadow:
+      0 12px 36px rgba(0, 0, 0, 0.4),
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.15);
+  }
+
+  .wg-shell {
+    width: 100%;
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    padding-block: 2.5rem 5rem;
+  }
+
+  @media (min-width: 768px) {
+    .wg-shell {
+      padding-inline: 0;
+      padding-block-start: 4rem;
+    }
+  }
+
+  .wg-kicker {
+    font-size: 0.6875rem;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: color-mix(in srgb, currentColor 42%, transparent);
+  }
+
+  .wg-heading {
+    color: rgb(17 24 39);
+    font-weight: 720;
+    line-height: 1.04;
+  }
+
+  .dark .wg-heading {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .wg-field {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 1rem;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 10px 34px rgba(58, 86, 118, 0.06);
+  }
+
+  .wg-field:focus,
+  .wg-field:focus-visible {
+    outline: none;
+    border-color: rgba(125, 211, 252, 0.68);
+    box-shadow:
+      0 0 0 3px rgba(125, 211, 252, 0.22),
+      0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  }
+
+  .dark .wg-field {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(255, 255, 255, 0.13);
+  }
+
+  .wg-prose {
+    color: rgb(31 41 55);
+    font-size: 1rem;
+    line-height: 1.78;
+  }
+
+  .dark .wg-prose {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .wg-prose > * + * {
+    margin-top: 1.25rem;
+  }
+
+  .wg-prose h2,
+  .wg-prose h3,
+  .wg-prose h4 {
+    color: rgb(17 24 39);
+    font-weight: 720;
+    line-height: 1.18;
+    scroll-margin-top: 7rem;
+  }
+
+  .dark .wg-prose h2,
+  .dark .wg-prose h3,
+  .dark .wg-prose h4 {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .wg-prose h2 {
+    margin-top: 2.25rem;
+    font-size: 1.75rem;
+  }
+
+  .wg-prose h3 {
+    margin-top: 1.9rem;
+    font-size: 1.35rem;
+  }
+
+  .wg-prose h4 {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .wg-prose a {
+    color: rgb(2 132 199);
+    text-decoration: underline;
+    text-decoration-color: rgba(2, 132, 199, 0.28);
+    text-underline-offset: 0.22em;
+  }
+
+  .dark .wg-prose a {
+    color: rgb(125 211 252);
+    text-decoration-color: rgba(125, 211, 252, 0.32);
+  }
+
+  .wg-prose ul,
+  .wg-prose ol {
+    padding-left: 1.35rem;
+  }
+
+  .wg-prose ul {
+    list-style: disc;
+  }
+
+  .wg-prose ol {
+    list-style: decimal;
+  }
+
+  .wg-prose li + li {
+    margin-top: 0.45rem;
+  }
+
+  .wg-prose blockquote {
+    border-left: 1px solid rgba(125, 211, 252, 0.55);
+    padding: 1rem 1.25rem;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.16);
+    color: rgb(55 65 81);
+  }
+
+  .dark .wg-prose blockquote {
+    background: rgba(255, 255, 255, 0.055);
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .wg-prose :not(pre) > code {
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.34);
+    padding: 0.12rem 0.36rem;
+    font-size: 0.92em;
+  }
+
+  .dark .wg-prose :not(pre) > code {
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .wg-prose .wg-code-block {
+    overflow: hidden;
+    overflow-x: auto;
+    border-radius: 1.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.16)),
+      rgba(255, 255, 255, 0.18);
+    padding: 1rem;
+    box-shadow:
+      0 18px 50px rgba(40, 70, 100, 0.16),
+      0 1px 0 rgba(255, 255, 255, 0.64) inset;
+  }
+
+  .dark .wg-prose .wg-code-block {
+    border-color: rgba(255, 255, 255, 0.14);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+      rgba(5, 8, 15, 0.48);
+    box-shadow:
+      0 18px 50px rgba(0, 0, 0, 0.34),
+      0 1px 0 rgba(255, 255, 255, 0.12) inset;
+  }
+
+  .wg-prose .wg-code-block pre {
+    width: max-content;
+    min-width: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.78) !important;
+    padding: 1.1rem 1.25rem;
+    color: rgb(31 41 55);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .dark .wg-prose .wg-code-block pre {
+    background: rgba(7, 10, 18, 0.72) !important;
+    color: rgba(255, 255, 255, 0.86);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .wg-prose .wg-code-block code {
+    font-family:
+      "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular,
+      Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: inherit;
+  }
+
+  .wg-prose .wg-code-block .shiki,
+  .wg-prose .wg-code-block .shiki span {
+    background-color: transparent !important;
+  }
+
+  .wg-prose .wg-code-block .shiki {
+    color: var(--shiki-light, rgb(31 41 55)) !important;
+  }
+
+  .wg-prose .wg-code-block .shiki span {
+    color: var(--shiki-light, inherit) !important;
+  }
+
+  html.dark .wg-prose .wg-code-block .shiki,
+  html.dark .wg-prose .wg-code-block .shiki span {
+    background-color: transparent !important;
+  }
+
+  html.dark .wg-prose .wg-code-block .shiki {
+    color: var(--shiki-dark, rgba(255, 255, 255, 0.86)) !important;
+  }
+
+  html.dark .wg-prose .wg-code-block .shiki span {
+    color: var(--shiki-dark, inherit) !important;
+  }
+
+  .wg-prose img {
+    width: 100%;
+    height: auto;
+    box-shadow: 0 18px 54px rgba(40, 70, 100, 0.16);
+  }
+
+  .dark .wg-prose img {
+    box-shadow: 0 18px 54px rgba(0, 0, 0, 0.38);
+  }
+
+  .wg-comment-prose {
+    color: rgb(55 65 81);
+    line-height: 1.68;
+  }
+
+  .dark .wg-comment-prose {
+    color: rgba(255, 255, 255, 0.66);
+  }
+
+  .wg-comment-prose > * + * {
+    margin-top: 0.7rem;
+  }
+
+  .wg-comment-prose a {
+    color: rgb(2 132 199);
+    text-decoration: underline;
+    text-decoration-color: rgba(2, 132, 199, 0.28);
+    text-underline-offset: 0.2em;
+  }
+
+  .dark .wg-comment-prose a {
+    color: rgb(125 211 252);
+    text-decoration-color: rgba(125, 211, 252, 0.32);
+  }
+
+  .wg-comment-prose ul,
+  .wg-comment-prose ol {
+    padding-left: 1.2rem;
+  }
+
+  .wg-comment-prose ul {
+    list-style: disc;
+  }
+
+  .wg-comment-prose ol {
+    list-style: decimal;
+  }
+
+  .wg-comment-prose blockquote {
+    border-left: 1px solid rgba(125, 211, 252, 0.5);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.14);
+    padding: 0.75rem 1rem;
+  }
+
+  .dark .wg-comment-prose blockquote {
+    background: rgba(255, 255, 255, 0.055);
+  }
+
+  .wg-comment-prose :not(pre) > code {
+    border-radius: 0.45rem;
+    background: rgba(255, 255, 255, 0.32);
+    padding: 0.1rem 0.32rem;
+    font-size: 0.92em;
+  }
+
+  .dark .wg-comment-prose :not(pre) > code {
+    background: rgba(255, 255, 255, 0.085);
+  }
+
+  .wg-comment-heading {
+    color: rgb(31 41 55);
+    font-weight: 720;
+    line-height: 1.25;
+  }
+
+  .dark .wg-comment-heading {
+    color: rgba(255, 255, 255, 0.84);
+  }
+
+  .wg-comment-code {
+    position: relative;
+    overflow-x: auto;
+    border-radius: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)),
+      rgba(255, 255, 255, 0.14);
+    padding: 1rem;
+    color: rgb(31 41 55);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+
+  .dark .wg-comment-code {
+    border-color: rgba(255, 255, 255, 0.13);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+      rgba(4, 8, 18, 0.42);
+    color: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .wg-comment-code code {
+    display: block;
+    min-width: max-content;
+    white-space: pre;
+    background: transparent;
+    padding: 0;
+    font-family:
+      "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular,
+      Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+  }
+
+  .wg-comment-code-lang {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(2, 132, 199, 0.72);
+  }
+
+  .dark .wg-comment-code-lang {
+    color: rgba(125, 211, 252, 0.72);
+  }
+}
+
+/* ─── Page background ───────────────────────────────────────────────────────
+   Base color lives on <html> so it shows in overscroll areas and is never
+   covered by a solid div. windglass-theme itself is TRANSPARENT — the fixed
+   ambient blobs injected by PublicLayout shine straight through to the glass
+   panels, giving backdrop-filter something colorful to blur and refract.
+────────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    background: #f2f5fc;
+  }
+  html.dark {
+    background: #080a14;
+  }
+}
+
+.windglass-theme {
+  background: transparent;
+  min-height: 100vh;
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  15%       { transform: rotate(14deg); }
+  30%       { transform: rotate(-8deg); }
+  45%       { transform: rotate(14deg); }
+  60%       { transform: rotate(-4deg); }
+  75%       { transform: rotate(10deg); }
+}
+
+.wg-typewriter-char {
+  display: inline-block;
+  animation: wg-typewriter-emerge 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: left center;
+}
+
+.wg-typewriter-cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.92em;
+  margin-left: 0.12em;
+  border-radius: 999px;
+  vertical-align: -0.1em;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(125, 211, 252, 0.72)),
+    rgb(14 165 233 / 0.72);
+  box-shadow:
+    0 0 16px rgb(125 211 252 / 0.55),
+    0 0 1px rgb(255 255 255 / 0.9) inset;
+  animation: wg-typewriter-cursor 920ms steps(2, jump-none) infinite;
+}
+
+.dark .wg-typewriter-cursor {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(186, 230, 253, 0.78)),
+    rgb(125 211 252 / 0.8);
+  box-shadow:
+    0 0 18px rgb(125 211 252 / 0.62),
+    0 0 1px rgb(255 255 255 / 0.9) inset;
+}
+
+@keyframes wg-typewriter-emerge {
+  from {
+    opacity: 0;
+    filter: blur(4px) brightness(1.18);
+    transform: translateX(-0.32em) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0) brightness(1);
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes wg-typewriter-cursor {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0.18; }
+}
+
+/* Shimmer — light sweeps across the glass surface once on mount */
+@keyframes wg-shimmer {
+  0% { transform: translateX(-100%) rotate(12deg); }
+  100% { transform: translateX(200%) rotate(12deg); }
+}
+
+.wg-shimmer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.wg-shimmer::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  animation: wg-shimmer 1.8s ease-in-out forwards;
+  animation-delay: 0.4s;
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wg-typewriter-char,
+  .wg-typewriter-cursor,
+  .wg-shimmer::after {
+    animation: none;
+  }
+}

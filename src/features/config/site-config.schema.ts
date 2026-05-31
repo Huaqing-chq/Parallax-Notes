@@ -270,6 +270,28 @@ function createFuwariThemeSiteConfigInputFormSchema(messages: Messages) {
   });
 }
 
+function createWindglassThemeSiteConfigSchema() {
+  return z.object({
+    navBarName: createSiteTextSchema(60),
+    background: createDefaultThemeBackgroundSchema().optional(),
+  });
+}
+
+function createWindglassThemeSiteConfigInputSchema() {
+  return z.object({
+    navBarName: createSiteTextSchema(60).optional(),
+    background: createDefaultThemeBackgroundInputSchema().optional(),
+  });
+}
+
+function createWindglassThemeSiteConfigInputFormSchema(messages: Messages) {
+  return z.object({
+    navBarName: createSiteTextFormSchema(60, messages).optional(),
+    background:
+      createDefaultThemeBackgroundInputFormSchema(messages).optional(),
+  });
+}
+
 export const defaultThemeBackgroundSchema =
   createDefaultThemeBackgroundSchema();
 export const defaultThemeBackgroundInputSchema =
@@ -281,6 +303,10 @@ export const defaultThemeSiteConfigInputSchema =
 export const fuwariThemeSiteConfigSchema = createFuwariThemeSiteConfigSchema();
 export const fuwariThemeSiteConfigInputSchema =
   createFuwariThemeSiteConfigInputSchema();
+export const windglassThemeSiteConfigSchema =
+  createWindglassThemeSiteConfigSchema();
+export const windglassThemeSiteConfigInputSchema =
+  createWindglassThemeSiteConfigInputSchema();
 
 export const FullSiteConfigSchema = z.object({
   title: createSiteTextSchema(120),
@@ -298,6 +324,7 @@ export const FullSiteConfigSchema = z.object({
   theme: z.object({
     default: defaultThemeSiteConfigSchema,
     fuwari: fuwariThemeSiteConfigSchema,
+    windglass: windglassThemeSiteConfigSchema,
   }),
 });
 
@@ -322,6 +349,8 @@ export function createSiteConfigInputFormSchema(messages: Messages) {
         default:
           createDefaultThemeSiteConfigInputFormSchema(messages).optional(),
         fuwari: createFuwariThemeSiteConfigInputFormSchema(messages).optional(),
+        windglass:
+          createWindglassThemeSiteConfigInputFormSchema(messages).optional(),
       })
       .optional(),
   });
@@ -346,6 +375,7 @@ export const SiteConfigInputSchema = z.object({
     .object({
       default: defaultThemeSiteConfigInputSchema.optional(),
       fuwari: fuwariThemeSiteConfigInputSchema.optional(),
+      windglass: windglassThemeSiteConfigInputSchema.optional(),
     })
     .optional(),
 });
@@ -364,6 +394,12 @@ export type DefaultThemeSiteConfigInput = z.infer<
 export type FuwariThemeSiteConfig = z.infer<typeof fuwariThemeSiteConfigSchema>;
 export type FuwariThemeSiteConfigInput = z.infer<
   typeof fuwariThemeSiteConfigInputSchema
+>;
+export type WindglassThemeSiteConfig = z.infer<
+  typeof windglassThemeSiteConfigSchema
+>;
+export type WindglassThemeSiteConfigInput = z.infer<
+  typeof windglassThemeSiteConfigInputSchema
 >;
 export type SiteConfig = z.infer<typeof FullSiteConfigSchema>;
 export type SiteConfigInput = z.infer<typeof SiteConfigInputSchema>;
