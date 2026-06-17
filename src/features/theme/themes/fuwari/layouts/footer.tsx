@@ -60,6 +60,38 @@ export function Footer(_: FooterProps) {
           </a>
         </div>
       </div>
+      <div className="mt-4 text-center text-sm text-muted-foreground">
+  如无特别声明，本博客文字采用
+  <a
+    href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+    target="_blank"
+    rel="license"
+    className="underline hover:text-primary"
+  >
+    CC BY-NC-SA 4.0许可协议
+  </a>
+  进行许可。
+  <img
+    src="https://mirrors.creativecommons.org/presskit/icons/cc.svg"
+    alt=""
+    className="inline-block max-w-[1em] max-h-[1em] ml-1"
+  />
+  <img
+    src="https://mirrors.creativecommons.org/presskit/icons/by.svg"
+    alt=""
+    className="inline-block max-w-[1em] max-h-[1em] ml-1"
+  />
+  <img
+    src="https://mirrors.creativecommons.org/presskit/icons/nc.svg"
+    alt=""
+    className="inline-block max-w-[1em] max-h-[1em] ml-1"
+  />
+  <img
+    src="https://mirrors.creativecommons.org/presskit/icons/sa.svg"
+    alt=""
+    className="inline-block max-w-[1em] max-h-[1em] ml-1"
+  />
+</div>
     </>
   );
 }
